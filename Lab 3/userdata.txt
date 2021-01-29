@@ -1,0 +1,6 @@
+yum update -y
+yum install httpd -y
+cd /var/www/html
+aws s3 cp s3://zaycev/index.html /var/www/html/ --region us-east-2
+service httpd start
+chkconfig httpd on
