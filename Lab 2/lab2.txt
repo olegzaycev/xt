@@ -1,25 +1,25 @@
-Ñòâîðþºì ìåðåæó
-aws ec2 create-vpc --cidr-block 10.0.0.0/16
-Ñòâîðþºì 2 ï³äìåðåæ³
-aws ec2 create-subnet --vpc-id vpc-05bf8e30c27304e33 --cidr-block 10.0.1.0/24 
-aws ec2 create-subnet --vpc-id vpc-05bf8e30c27304e33 --cidr-block 10.0.0.0/24 
-Ãåòàâåé
-aws ec2 create-internet-gateway
-aws ec2 attach-internet-gateway --vpc-id vpc-05bf8e30c27304e33 --internet-gateway-id igw-09be7e2400b2c46ab 
-Òàáëèö³ ìàðøðóòèçàö³¿¿
-aws ec2 create-route-table --vpc-id vpc-05bf8e30c27304e33 
-aws ec2 create-route --route-table-id rtb-06c1f0c245f07993e --destination-cidr-block 0.0.0.0/0 --gateway-id igw-09be7e2400b2c46ab 
-aws ec2 describe-route-tables --route-table-id rtb-06c1f0c245f07993e 
-
-aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-03da56ffa2a7d9459" --query 'Subnets[*].{ID:SubnetId,CIDR:CidrBlock}' 
-
-aws ec2 associate-route-table  --subnet-id  subnet-0918ecc955fb6daff --route-table-id rtb-06c1f0c245f07993e 
-
-aws ec2 modify-subnet-attribute --subnet-id  subnet-0918ecc955fb6daff --map-public-ip-on-launch 
+Ð¡Ñ‚Ð²Ð¾Ñ€ÑŽÑ”Ð¼ Ð¼ÐµÑ€ÐµÐ¶Ñƒ 
+aws ec2 create-vpc --cidr-block 10.0.0.0/16 
+Ð¡Ñ‚Ð²Ð¾Ñ€ÑŽÑ”Ð¼ 2 Ð¿Ñ–Ð´Ð¼ÐµÑ€ÐµÐ¶Ñ– 
+aws ec2 create-subnet --vpc-id vpc-03702620b4933afab --cidr-block 10.0.1.0/24 
+aws ec2 create-subnet --vpc-id vpc-03702620b4933afab --cidr-block 10.0.0.0/24 
+Ð“ÐµÑ‚Ð°Ð²ÐµÐ¹ 
+aws ec2 create-internet-gateway 
+aws ec2 attach-internet-gateway --vpc-id vpc-010aa9ffe6e942716 --internet-gateway-id igw-04410d3e2b2ed5ea2 
+Ð¢Ð°Ð±Ð»Ð¸Ñ†Ñ– Ð¼Ð°Ñ€ÑˆÑ€ÑƒÑ‚Ð¸Ð·Ð°Ñ†Ñ–Ñ—Ñ— 
+aws ec2 create-route-table --vpc-id vpc-010aa9ffe6e942716 
+aws ec2 create-route --route-table-id rtb-0560fb4e44ded6812 --destination-cidr-block 0.0.0.0/0 --gateway-id igw-04410d3e2b2ed5ea2 
+aws ec2 describe-route-tables --route-table-id rtb-0560fb4e44ded6812 
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-010aa9ffe6e942716" --query 'Subnets[*].{ID:SubnetId,CIDR:CidrBlock}' 
  
-aws ec2 create-key-pair --key-name MyKeyPairOne --query 'KeyMaterial' --output text > MyKeyPair.pem
-
-aws ec2 create-security-group --group-name SSHAccess --description "Security group for SSH access" --vpc-id vpc-05bf8e30c27304e33 
-aws ec2 authorize-security-group-ingress --group-id sg-06447b4490640d34b --protocol tcp --port 22 --cidr 0.0.0.0/0 
-
-aws ec2 run-instances --image-id ami-020c33a630009a69f --count 1 --instance-type t2.micro --key-name MyKeyPairOne --security-group-ids sg-06447b4490640d34b --subnet-id  subnet-0918ecc955fb6daff 
+aws ec2 associate-route-table  --subnet-id subnet-0891ecb1e346140ae --route-table-id rtb-0560fb4e44ded6812 
+aws ec2 modify-subnet-attribute --subnet-id subnet-0891ecb1e346140ae --map-public-ip-on-launch 
+ 
+aws ec2 create-key-pair --key-name MyKeyPair --query 'KeyMaterial' --output text > MyKeyPair.pem 
+ 
+aws ec2 create-security-group --group-name SSHAccess --description "Security group for SSH access" --vpc-id vpc-010aa9ffe6e942716 
+aws ec2 authorize-security-group-ingress --group-id sg-00a486413c458b9a2 --protocol tcp --port 22 --cidr 0.0.0.0/0 
+ 
+aws ec2 run-instances --image-id ami-020c33a630009a69f --count 1 --instance-type t2.micro --key-name MyKeyPair --security-group-ids sg-00a486413c458b9a2 --subnet-id subnet-0891ecb1e346140ae 
+aws ec2 describe-instances --instance-id i-0b0bf3c37f18d8dcf 
+ssh -i "MyKeyPair.pem" ec2-user@52.87.168.235
